@@ -1,0 +1,20 @@
+{% extends "polls/base.html" %}
+{% block content %}
+{% load static %}
+<div class="container border border-dark">
+    <div class="row">
+        <div class="col">
+            <p class="fs-4 fw-bold border-bottom border-dark">질문</p>
+        </di>
+        <div class="col border-bottom border-dark">
+            <div>
+                <p>{{ comment_detail.comment_title }}</p>
+                <p>{{ comment_detail.comment }}</p>
+                <p>답변: {{ comment_detail.recomment_title }}</p>
+                <p>답변내용: {{ comment_detail.recomment_content }} </p>
+            </div>
+        </div>
+    </div>
+    <div class="row row-cols-1">
+</div>
+{% endblock %}

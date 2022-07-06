@@ -1,0 +1,15 @@
+{% extends "polls/base.html" %}
+{% block content %}
+{% load static %}
+<div class="container">
+    <div>
+        {{ post.name }}
+    </div>
+    <div>
+        {{ post.price }}
+    </div>
+    <div>
+        {{ post.content |safe }}
+    </div>
+</div>
+{% endblock %}

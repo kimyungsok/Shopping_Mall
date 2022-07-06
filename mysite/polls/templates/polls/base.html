@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+            integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/4567e89538.js" crossorigin="anonymous"></script>
+    <style>
+        .nav-link {
+            font-size: small
+        }
+
+        .footer-font {
+            font-size: small;
+        }
+
+
+
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="http://127.0.0.1:8000/polls/">Home</a>
+                </li>
+                <li class="nav-item">
+                    {% if user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'Logout' %}">{{ user.username }} ( LOGOUT )</a>
+                    {% else %}
+                    <a class="nav-link" href="{% url 'Login' %}">LOGIN</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if not user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'signup' %}">JOIN</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">MYPAGE</a>
+                </li>
+            </ul>
+            <form class="d-flex" action="{% url 'search' %}" method="GET">
+                {% csrf_token %}
+                <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="q"
+                       value="{{ request.GET.q }}">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-12">
+            <img src="{% static 'image/main-logo.jpg' %}" class="img-fluid center-block d-block mx-auto" alt="...">
+        </div>
+    </div>
+</div>
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-12 dropdown">
+            <ul class="list-group list-group-horizontal-sm justify-content-center ">
+                <li class="list-group-item " style="border: none"><a href="{% url 'UNISEX' %}"
+                                                                     class="btn fw-bold px-3 fs-6" tabindex="-1"
+                                                                     role="button" aria-disabled="true">NEW5%</a></li>
+                <li class="list-group-item " style="border: none"><a href="{% url 'UNISEX' %}"
+                                                                     class="btn fw-bold px-3 fs-6" tabindex="-1"
+                                                                     role="button" aria-disabled="true">BEST</a></li>
+                <li class="list-group-item " style="border: none"><a href="{% url 'UNISEX' %}"
+                                                                     class="btn fw-bold px-3 fs-6" tabindex="-1"
+                                                                     role="button" aria-disabled="true">UNISEX</a></li>
+                <li class="list-group-item " style="border: none"><a href="{% url 'UNISEX' %}"
+                                                                     class="btn fw-bold px-3 fs-6" tabindex="-1"
+                                                                     role="button" aria-disabled="true">MADE</a></li>
+                <button class="btn dropdown-toggle fs-6 fw-bold" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    COMMUNITY
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#">Notice</a></li>
+                    <li><a class="dropdown-item" href="#">Review</a></li>
+                    <li><a class="dropdown-item" href="{% url 'comment' %}">Q&A</a></li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+{% block content %}
+{% endblock %}
+<div class="container mt-5">
+    <footer>
+        <div class="row">
+            <div class="col-4 position-relative">
+                <div>
+                    <p class="fs-3 fw">CodingStone</p>
+                    <p class="footer-font">070-00-000 <br>
+                        산타슨<br>
+                        경기도 평택시 원평로</p>
+
+                </div>
+            </div>
+            <div class="col-4 position-relative">
+                <div>
+                    <br>
+                    <br>
+                    <br>
+                    <p class="footer-font">Tel. 010-5147-8125<br>
+                        Under_170</p>
+                </div>
+            </div>
+            <div class="col-4 position-relative">
+                <div class="position-absolute bottom-0 start-0">
+                    <p class="footer-font">카피라트 올이트</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+
+</html>
