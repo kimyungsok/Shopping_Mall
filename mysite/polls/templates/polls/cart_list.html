@@ -1,0 +1,28 @@
+{% extends "polls/base.html" %}
+{% block content %}
+{% load static %}
+
+<h1>
+  카트
+</h1>
+{% for cart in cart_item %}
+  <div>
+    <img src="{{ cart.product.main_photo.url }}">
+  </div>
+  <div>
+    {{ cart.product }}
+  </div>
+  <div>
+    {{ cart.quantity }}
+  </div>
+  <div>
+    {{ cart.product.price }}
+  </div>
+  <div>
+    <a href="{% url 'minus_cart_item' cart.id %}">감소</a>
+  </div>
+{% endfor %}
+<div>
+  {{ total_price }}
+</div>
+{% endblock %}

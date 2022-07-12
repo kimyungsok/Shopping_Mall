@@ -1,11 +1,14 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import FormView
 from .forms import CommentForm, UserForm
 from django.contrib.auth import authenticate, login
-from .models import Unisex, NewArrivals, CommentFormModel,weekly_best_slide_image,main_slide_image
+from .models import Unisex, NewArrivals, CommentFormModel,weekly_best_slide_image,main_slide_image, CartItem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.core.exceptions import ObjectDoesNotExist
 
 def index(request):
     main_slide = weekly_best_slide_image.objects.all()
@@ -78,3 +81,51 @@ def signup(request):
     else:
         form = UserForm()
     return render(request, 'polls/signup.html', {'form': form})
+
+
+@login_required
+def add_cart(request, product_pk):
+    product = Unisex.objects.get(pk=product_pk)
+
+    try:
+        cart = CartItem.objects.get(product__id=product.pk, user__id=request.user.pk)
+        if cart:
+            if cart.product.name == product.name:
+                cart.quantity += 1
+                cart.save()
+    except CartItem.DoesNotExist:
+        user = User.objects.get(pk=request.user.pk)
+        cart = CartItem(
+            user=user,
+            product=product,
+            quantity=1,
+        )
+        cart.save()
+    return redirect('my_cart')
+
+@login_required
+def my_cart(request):
+    cart_item = CartItem.objects.filter(user__id=request.user.pk)
+    total_price = 0
+    for each_total in cart_item:
+        total_price += each_total.product.price * each_total.quantity
+    if cart_item is not None:
+        return render(request, 'polls/cart_list.html', {'cart_item': cart_item, 'total_price': total_price})
+    return redirect('my_cart')
+
+def minus_cart_item(request, product_pk):
+    cart_item = CartItem.objects.filter(product__id=product_pk)
+    product = Unisex.objects.get(pk=product_pk)
+    try:
+        for item in cart_item:
+            if item.product.name == product.name:
+                if item.quantity > 1:
+                    item.quantity -= 1
+                    item.save()
+                if item.quantity == 1:
+                    item.delete()
+                return redirect('my_cart')
+            else:
+                return redirect('my_cart')
+    except CartItem.DoesNotExist:
+        raise Http404

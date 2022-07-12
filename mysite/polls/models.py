@@ -1,4 +1,6 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.db.models import Q
 
@@ -52,6 +54,26 @@ class CommentFormModel(models.Model):
 
     def get_absolute_url(self):
         return f'/polls/{self.pk}/'
+
+class CartItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Unisex, on_delete=models.CASCADE)
+    active = models.BooleanField(default=False)
+    # 수량은 -1 과 같은 수량이 없기 때문에 아래의 필드로 선언하여 최소값을 1 로 설정
+    quantity = models.PositiveSmallIntegerField(null=True, default=1, validators=[MinValueValidator(1), MaxValueValidator(100)])
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = '장바구니'
+        verbose_name_plural = f'{verbose_name} 목록'
+        ordering = ['-pk']
+
+    def sub_total(self):
+        return self.product.price * self.quantity
+
+    def __str__(self):
+        return self.product.name
+
 
 
 

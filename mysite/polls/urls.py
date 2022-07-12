@@ -12,4 +12,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='polls/Login.html'), name='Login'),
     path('logout/', auth_views.LogoutView.as_view(), name='Logout'),
     path('signup/', views.signup, name='signup'),
+    path('add_cart/<int:product_pk>', views.add_cart, name='add_cart'),
+    path('my_cart/', views.my_cart, name='my_cart'),
+    path('minus_cart_item/<int:product_pk>/', views.minus_cart_item, name='minus_cart_item')
 ]

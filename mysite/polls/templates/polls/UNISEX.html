@@ -19,6 +19,7 @@
                     <p class=" card-text">{{ p.name }} <br>
                         {{ p.price }} <br>
                     </p>
+                    <a class="btn btn-secondary" href="{% url 'add_cart' p.id %}"> Add cart</a>
                 </div>
             </div>
         </div>

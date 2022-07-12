@@ -55,7 +55,7 @@
                     {% endif %}
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">MYPAGE</a>
+                    <a class="nav-link" href="{% url 'my_cart' %}">MYPAGE ( Cart )</a>
                 </li>
             </ul>
             <form class="d-flex" action="{% url 'search' %}" method="GET">
